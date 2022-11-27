@@ -1,4 +1,4 @@
-interface ConfigItem {
+export interface ConfigItem {
   Host?: string
   HostName?: string
   User?: string
@@ -6,7 +6,7 @@ interface ConfigItem {
   IdentityFile?: string
 }
 
-export default (strConfig: string) => {
+export default (strConfig: string): ConfigItem[] => {
   // TODO 判断配置文件出错
   const rowList = strConfig.split('\n').filter((row) => row.trim())
   const configList: ConfigItem[] = []
