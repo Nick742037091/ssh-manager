@@ -1,18 +1,33 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <!-- <div @click="ls">打开文件</div> -->
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+<script lang="ts" setup>
+import parseSSHConfig from '@/utils/parseSSHConfig'
+const readSSHConfig = () => {
+  window.fs.readFile(
+    window.env.USER_HOME + '/.ssh/config',
+    { encoding: 'utf-8' },
+    (error, data) => {
+      if (error) {
+        console.info('读取SSH配置文件失败')
+        return
+      }
+      parseSSHConfig(data)
+    }
+  )
+}
+readSSHConfig()
 
-export default defineComponent({
-  name: "Home",
-  components: {
-    HelloWorld,
-  },
-});
+// const ls = async () => {
+//   window.child_process.exec('ls', (error, stdout) => {
+//     if (error) {
+//       console.error('error: ' + error)
+//       return
+//     }
+//     console.log('stdout: \n' + stdout)
+//   })
+// }
 </script>
