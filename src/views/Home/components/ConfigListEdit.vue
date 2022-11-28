@@ -30,15 +30,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineExpose } from 'vue'
+import { ref, defineExpose, defineEmits } from 'vue'
 import { ConfigItem } from '@/utils/parseSSHConfig'
 import { NCard, NFormItem, NInput } from 'naive-ui'
 import { cloneDeep } from 'lodash'
+import { sshConfigPath } from '../common'
+const emits = defineEmits(['update-config'])
 const list = ref<ConfigItem[]>()
 const setData = (_list: ConfigItem[]) => {
   list.value = cloneDeep(_list)
 }
-defineExpose({ setData })
+const CONFIG_KEYS: (keyof ConfigItem)[] = [
+  'Host',
+  'HostName',
+  'User',
+  'PreferredAuthentications',
+  'IdentityFile'
+]
+const save = () => {
+  const rowList: string[] = []
+  list.value?.forEach((config) => {
+    CONFIG_KEYS.forEach((key) => {
+      const value = config[key] || ''
+      const row = `${key} ${value}`
+      rowList.push(row)
+    })
+    rowList.push('\n')
+  })
+  const configStr = rowList.join('\n')
+  window.fs.writeFile(sshConfigPath, configStr, {}, (error) => {
+    if (!error) {
+      emits('update-config')
+    }
+  })
+}
+defineExpose({ setData, save })
 </script>
 
 <style scoped lang="scss">
