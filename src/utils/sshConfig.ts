@@ -40,7 +40,8 @@ export const parseSSHConfig = (strConfig: string): ConfigItem[] => {
 
 export const getSSHStatus = (config: ConfigItem): Promise<number> => {
   return new Promise((resolve) => {
-    const command = `ssh -T git@${config.HostName}`
+    // 超时时间3秒
+    const command = `ssh -o ConnectTimeout=3 -T git@${config.HostName} `
     config.status = 0
     window.child_process.exec(command, (error, stdout) => {
       if (error) {
