@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, defineExpose, defineEmits } from 'vue'
-import { ConfigItem } from '@/utils/parseSSHConfig'
+import { ConfigItem } from '@/utils/sshConfig'
 import { NCard, NFormItem, NInput } from 'naive-ui'
 import { cloneDeep } from 'lodash'
 import { sshConfigPath } from '../common'

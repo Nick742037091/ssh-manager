@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import parseSSHConfig, { ConfigItem } from '@/utils/parseSSHConfig'
+import { ConfigItem, parseSSHConfig, getSSHStatus } from '@/utils/sshConfig'
 import { NButton } from 'naive-ui'
 import ConfigList from './components/ConfigList.vue'
 import ConfigListEdit from './components/ConfigListEdit.vue'
@@ -35,6 +35,9 @@ const readSSHConfig = () => {
       return
     }
     sshConfigList.value = parseSSHConfig(data)
+    sshConfigList.value.forEach((config) => {
+      getSSHStatus(config)
+    })
   })
 }
 readSSHConfig()
